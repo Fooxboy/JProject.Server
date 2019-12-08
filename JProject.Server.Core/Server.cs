@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,14 @@ namespace JProject.Server.Core
         {
             Task.Run(() =>
             {
+                var userIp = ((IPEndPoint)socket.RemoteEndPoint).Address;
+                Console.WriteLine($"Новое подключение с ip {userIp}");
+
+
+                if(request.Split(';')[0] == "login")
+                {
+                    //Авторизация.
+                }
                 //Todo: сделать
             });
         }
