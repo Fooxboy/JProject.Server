@@ -69,8 +69,11 @@ namespace JProject.Server.Core
                         var data = Encoding.Unicode.GetBytes($"lobby;{user.Name}");
                         socket.Send(data);
                     }
+                }else
+                {
+                    var data = Encoding.Unicode.GetBytes($"error;5");
+                    socket.Send(data);
                 }
-                //Todo: make register
             });
         }
     }
