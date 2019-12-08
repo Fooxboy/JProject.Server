@@ -10,12 +10,12 @@ namespace JProject.Server.ShellConsole.Models
     {
         public User Login(string nick, string password)
         {
-            throw new NotImplementedException();
+            return new User();
         }
 
         public User Register(string nick, string password)
         {
-            throw new NotImplementedException();
+            return new User();
         }
     }
 }

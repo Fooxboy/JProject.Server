@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace JProject.Server.Core
@@ -24,6 +25,7 @@ namespace JProject.Server.Core
 
         public void Start()
         {
+            UserIsConnected = true;
             Task.Run(() => ListerNewRequest());
         }
 
@@ -31,7 +33,9 @@ namespace JProject.Server.Core
         {
             while (UserIsConnected)
             {
-                if (Socket.Available == 0) return;
+            run:
+                Thread.Sleep(200);
+                if (Socket.Available == 0) goto run;
                 var builder = new StringBuilder();
                 int bytes = 0;
                 byte[] data = new byte[256];
@@ -42,6 +46,7 @@ namespace JProject.Server.Core
                 }
                 while (Socket.Available > 0);
                 var message = builder.ToString();
+                Console.WriteLine($"Новое сообщение: {message}");
                 var response = _proccessor.Run(message);
                 if (response != null) this.Send(response);
             }

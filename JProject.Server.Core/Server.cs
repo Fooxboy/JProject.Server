@@ -77,6 +77,8 @@ namespace JProject.Server.Core
                 {
                     var data = Encoding.Unicode.GetBytes($"error;5");
                     socket.Send(data);
+                    socket.Close();
+                    
                 }
             });
         }

@@ -7,8 +7,8 @@ namespace JProject.Server.ShellConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Старт сервера по адресу localhost:2021");
-            var server = new Core.Server("localhost", 2021, new Database());
+            Console.WriteLine("Старт сервера по адресу 127.0.0.1:2021");
+            var server = new Core.Server("127.0.0.1", 2021, new Database());
             server.Start();
 
 
