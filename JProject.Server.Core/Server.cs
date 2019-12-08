@@ -14,6 +14,7 @@ namespace JProject.Server.Core
         private readonly string _ip;
         private readonly int _port;
         private readonly IDatabase _database;
+        private readonly CommandProccessor _proccessor;
         public List<Lobby> Lobbies { get;}
 
         public Server(string ip, int port, IDatabase database)
@@ -22,6 +23,7 @@ namespace JProject.Server.Core
             _port = port;
             _database = database;
             Lobbies = new List<Lobby>();
+            _proccessor = new CommandProccessor();
         }
 
         public void Start()
@@ -48,7 +50,8 @@ namespace JProject.Server.Core
                         socket.Send(data);
                     }else
                     {
-                        var lobby = new Lobby(socket, user);
+                        var lobby = new Lobby(socket, user, _proccessor);
+                        lobby.Start();
                         Lobbies.Add(lobby);
                         var data = Encoding.Unicode.GetBytes($"lobby;{user.Name}");
                         socket.Send(data);
@@ -64,7 +67,8 @@ namespace JProject.Server.Core
                     }
                     else
                     {
-                        var lobby = new Lobby(socket, user);
+                        var lobby = new Lobby(socket, user, _proccessor);
+                        lobby.Start();
                         Lobbies.Add(lobby);
                         var data = Encoding.Unicode.GetBytes($"lobby;{user.Name}");
                         socket.Send(data);

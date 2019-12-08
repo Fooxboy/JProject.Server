@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace JProject.Server.Core
 {
-    public class CommandProccessor:SocketHelper
+    public class CommandProccessor
     {
         public List<ICommand> Commands { get; set; }
 
-        public CommandProccessor(Socket socket):base(socket)
+        public CommandProccessor()
         {
             Commands = new List<ICommand>();
         }
@@ -25,34 +25,28 @@ namespace JProject.Server.Core
         }
 
 
-        public CommandProccessor Run(string message)
+        public string Run(string message)
         {
-            Task.Run(() =>
+            ICommand command;
+            try
             {
-                ICommand command;
-                try
-                {
-                    command = Commands.Single(c => c.Trigger == message.Split(';')[0]);
-                }catch
-                {
-                    Send("error;3");
-                    return;
-                }
+                command = Commands.Single(c => c.Trigger == message.Split(';')[0]);
+            }
+            catch
+            {
+                return "error;3";
+            }
 
-                try
-                {
-                    var result = command.Execute(message);
-                    Send(result);
-                }catch(Exception e)
-                {
-                    Send($"error;4;{e.Message}");
-                    Console.WriteLine($"Произошла ошибка при выполнении команды {command.Trigger}: \n {e}");
-                    return;
-                }
-
-                
-            });
-            return this;
+            try
+            {
+                var result = command.Execute(message);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Произошла ошибка при выполнении команды {command.Trigger}: \n {e}");
+                return $"error;4;{e.Message}";
+            }
         }
     }
 }
