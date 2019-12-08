@@ -38,7 +38,6 @@ namespace JProject.Server.Core
                 var userIp = ((IPEndPoint)socket.RemoteEndPoint).Address;
                 Console.WriteLine($"Новое подключение с ip {userIp}");
 
-
                 if(request.Split(';')[0] == "login")
                 {
                     var login = new Login(_database);
@@ -54,8 +53,24 @@ namespace JProject.Server.Core
                         var data = Encoding.Unicode.GetBytes($"lobby;{user.Name}");
                         socket.Send(data);
                     }
+                }else if(request.Split(';')[0] == "register")
+                {
+                    var user = _database.Register(request.Split(';')[1], request.Split(';')[2]);
+
+                    if (user is null)
+                    {
+                        var data = Encoding.Unicode.GetBytes("error;2");
+                        socket.Send(data);
+                    }
+                    else
+                    {
+                        var lobby = new Lobby(socket, user);
+                        Lobbies.Add(lobby);
+                        var data = Encoding.Unicode.GetBytes($"lobby;{user.Name}");
+                        socket.Send(data);
+                    }
                 }
-                //Todo: сделать
+                //Todo: make register
             });
         }
     }

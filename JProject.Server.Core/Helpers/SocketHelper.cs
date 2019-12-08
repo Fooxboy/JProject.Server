@@ -15,8 +15,15 @@ namespace JProject.Server.Core.Helpers
 
         public void Send(string message)
         {
-            var data = Encoding.Unicode.GetBytes(message);
-            _socket.Send(data);
+            try
+            {
+                var data = Encoding.Unicode.GetBytes(message);
+                _socket.Send(data);
+            }catch(Exception e)
+            {
+                Console.WriteLine($"Произошла ошибка при отправки данных: {e}");
+            }
+            
         }
     }
 }

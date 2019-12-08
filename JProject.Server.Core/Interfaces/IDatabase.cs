@@ -8,5 +8,6 @@ namespace JProject.Server.Core.Interfaces
     public interface IDatabase
     {
         User Login(string nick, string password);
+        User Register(string nick, string password);
     }
 }
