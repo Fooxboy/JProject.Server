@@ -28,7 +28,7 @@ namespace JProject.Server.Core
         {
             Task.Run(() =>
             {
-
+                //Todo: сделать
             });
         }
     }
